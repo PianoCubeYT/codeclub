@@ -2,8 +2,8 @@
 import pygame
 import random
 
-WIDTH = 360
-HEIGHT = 480
+WIDTH = 800
+HEIGHT = 600
 FPS = 30
 
 # define colours
@@ -14,6 +14,20 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 CYAN = (0, 255, 255)
 
+class Player(pygame.sprite.Sprite):
+    #sprite for the Player
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50, 50))
+        self.image.fill(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2, HEIGHT / 2)
+
+    def update(self):
+        self.rect.x += 5
+        if self.rect.left > WIDTH:
+            self.rect.right = 0
+
 # Initialise pygame and create window
 pygame.init()
 pygame.mixer.init()
@@ -22,6 +36,8 @@ pygame.display.set_caption("My Game")
 clock = pygame.time.Clock()
 
 all_sprites = pygame.sprite.Group()
+player = Player()
+all_sprites.add(player)
 # Game loop
 running = True
 while running:
