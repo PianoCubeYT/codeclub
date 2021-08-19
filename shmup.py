@@ -1,7 +1,7 @@
 # Shmup game
 # import pygame
 
-import pygame.time, pygame.display, pygame.mixer, pygame.sprite, pygame.key, pygame.image
+import pygame.time, pygame.display, pygame.mixer, pygame.sprite, pygame.key, pygame.image, pygame.draw
 
 import random
 from os import path
@@ -33,12 +33,14 @@ class Mob(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = meteor_img
         self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * 0.85 / 2)
+        # pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
         self.image.set_colorkey(BLACK)
         self.rect.x = random.randrange(0, WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
         self.speedy = random.randrange(1,8)
         self.speedx = random.randrange(-3, 3)
-
+ 
     def update(self):
         self.rect.y += self.speedy
         self.rect.x += self.speedx
@@ -53,6 +55,8 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(player_img, (50, 38))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
+        self.radius = 21
+        # pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
@@ -148,7 +152,7 @@ while running:
         mobs.add(m)
 
     # Check to see if a mob hit the player
-    hits = pygame.sprite.spritecollide(player, mobs, False)
+    hits = pygame.sprite.spritecollide(player, mobs, False, pygame.sprite.collide_circle)
     if len(hits) > 0:
         running = False
 
